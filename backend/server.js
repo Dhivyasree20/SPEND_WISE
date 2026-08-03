@@ -6,9 +6,11 @@ app.use(express.json());
 
 const healthRoutes = require('./src/routes/healthRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const expenseRoutes = require('./src/routes/expenseRoutes');
 
 app.use('/', healthRoutes);
 app.use('/', userRoutes);
+app.use('/', expenseRoutes);
 
 app.get('/test-user', (req, res) => {
     res.json({
