@@ -11,6 +11,18 @@ const getAllExpenses = () => {
     return expenses;
 };
 
+const createExpense = (expenseData) => {
+    const newExpense = {
+        id: expenses.length + 1,
+        ...expenseData
+    };
+
+    expenses.push(newExpense);
+
+    return newExpense;
+};
+
 module.exports = {
-    getAllExpenses
+    getAllExpenses,
+    createExpense
 };
