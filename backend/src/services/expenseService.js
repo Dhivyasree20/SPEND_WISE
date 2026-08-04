@@ -22,7 +22,24 @@ const createExpense = (expenseData) => {
     return newExpense;
 };
 
+const deleteExpense = (id) => {
+    const index = expenses.findIndex(
+        expense => expense.id === parseInt(id)
+    );
+
+    if (index === -1) {
+        return null;
+    }
+
+    const deletedExpense = expenses[index];
+
+    expenses.splice(index, 1);
+
+    return deletedExpense;
+};
+
 module.exports = {
     getAllExpenses,
-    createExpense
+    createExpense,
+    deleteExpense
 };
