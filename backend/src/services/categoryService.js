@@ -13,6 +13,18 @@ const getAllCategories = () => {
     return categories;
 };
 
+const createCategory = (categoryData) => {
+    const newCategory = {
+        id: categories.length + 1,
+        ...categoryData
+    };
+
+    categories.push(newCategory);
+
+    return newCategory;
+};
+
 module.exports = {
-    getAllCategories
+    getAllCategories,
+    createCategory
 };
