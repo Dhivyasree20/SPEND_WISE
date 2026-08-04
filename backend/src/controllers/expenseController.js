@@ -1,7 +1,8 @@
 const {
     getAllExpenses,
     createExpense,
-    deleteExpense
+    deleteExpense,
+    updateExpense
 } = require('../services/expenseService');
 
 const getExpenses = (req, res) => {
@@ -26,8 +27,24 @@ const removeExpense = (req, res) => {
     res.json(deletedExpense);
 };
 
+const editExpense = (req, res) => {
+    const updatedExpense = updateExpense(
+        req.params.id,
+        req.body
+    );
+
+    if (!updatedExpense) {
+        return res.status(404).json({
+            message: "Expense not found"
+        });
+    }
+
+    res.json(updatedExpense);
+};
+
 module.exports = {
     getExpenses,
     addExpense,
-    removeExpense
+    removeExpense,
+    editExpense
 };

@@ -38,8 +38,25 @@ const deleteExpense = (id) => {
     return deletedExpense;
 };
 
+const updateExpense = (id, expenseData) => {
+    const expense = expenses.find(
+        expense => expense.id === parseInt(id)
+    );
+
+    if (!expense) {
+        return null;
+    }
+
+    expense.title = expenseData.title;
+    expense.amount = expenseData.amount;
+    expense.category = expenseData.category;
+
+    return expense;
+};
+
 module.exports = {
     getAllExpenses,
     createExpense,
-    deleteExpense
+    deleteExpense,
+    updateExpense
 };
