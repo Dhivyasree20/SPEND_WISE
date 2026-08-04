@@ -1,6 +1,7 @@
 const {
     getAllCategories,
-    createCategory
+    createCategory,
+    deleteCategory
 } = require('../services/categoryService');
 
 const getCategories = (req, res) => {
@@ -13,7 +14,20 @@ const addCategory = (req, res) => {
     res.status(201).json(category);
 };
 
+const removeCategory = (req, res) => {
+    const deletedCategory = deleteCategory(req.params.id);
+
+    if (!deletedCategory) {
+        return res.status(404).json({
+            message: "Category not found"
+        });
+    }
+
+    res.json(deletedCategory);
+};
+
 module.exports = {
     getCategories,
-    addCategory
+    addCategory,
+    removeCategory
 };

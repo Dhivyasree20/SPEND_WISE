@@ -24,7 +24,24 @@ const createCategory = (categoryData) => {
     return newCategory;
 };
 
+const deleteCategory = (id) => {
+    const index = categories.findIndex(
+        category => category.id === parseInt(id)
+    );
+
+    if (index === -1) {
+        return null;
+    }
+
+    const deletedCategory = categories[index];
+
+    categories.splice(index, 1);
+
+    return deletedCategory;
+};
+
 module.exports = {
     getAllCategories,
-    createCategory
+    createCategory,
+    deleteCategory
 };

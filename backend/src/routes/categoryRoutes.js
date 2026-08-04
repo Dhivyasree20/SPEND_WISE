@@ -1,16 +1,17 @@
 const express = require('express');
 
-console.log('CATEGORY ROUTES LOADED');
-
 const router = express.Router();
 
 const {
     getCategories,
-    addCategory
+    addCategory,
+    removeCategory
 } = require('../controllers/categoryController');
 
 router.get('/categories', getCategories);
 
 router.post('/categories', addCategory);
+
+router.delete('/categories/:id', removeCategory);
 
 module.exports = router;
