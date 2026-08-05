@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
+console.log('CATEGORY ROUTES LOADED');
 const {
     getCategories,
     addCategory,
