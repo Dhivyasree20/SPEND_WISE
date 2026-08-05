@@ -5,8 +5,7 @@ const router = express.Router();
 const {
     getExpenses,
     addExpense,
-    removeExpense,
-    editExpense
+    removeExpense
 } = require('../controllers/expenseController');
 
 router.get('/expenses', getExpenses);
@@ -14,7 +13,5 @@ router.get('/expenses', getExpenses);
 router.post('/expenses', addExpense);
 
 router.delete('/expenses/:id', removeExpense);
-
-router.put('/expenses/:id', editExpense);
 
 module.exports = router;

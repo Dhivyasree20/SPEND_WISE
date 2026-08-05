@@ -1,62 +1,37 @@
-const expenses = [
-    {
-        id: 1,
-        title: "Lunch",
-        amount: 120,
-        category: "Food"
-    }
-];
+const pool = require('../config/db');
 
-const getAllExpenses = () => {
-    return expenses;
-};
-
-const createExpense = (expenseData) => {
-    const newExpense = {
-        id: expenses.length + 1,
-        ...expenseData
-    };
-
-    expenses.push(newExpense);
-
-    return newExpense;
-};
-
-const deleteExpense = (id) => {
-    const index = expenses.findIndex(
-        expense => expense.id === parseInt(id)
+const getAllExpenses = async () => {
+    const result = await pool.query(
+        'SELECT * FROM expenses ORDER BY id'
     );
 
-    if (index === -1) {
-        return null;
-    }
-
-    const deletedExpense = expenses[index];
-
-    expenses.splice(index, 1);
-
-    return deletedExpense;
+    return result.rows;
 };
 
-const updateExpense = (id, expenseData) => {
-    const expense = expenses.find(
-        expense => expense.id === parseInt(id)
+const createExpense = async (expenseData) => {
+    const { title, amount, category } = expenseData;
+
+    const result = await pool.query(
+        `INSERT INTO expenses (title, amount, category)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+        [title, amount, category]
     );
 
-    if (!expense) {
-        return null;
-    }
+    return result.rows[0];
+};
 
-    expense.title = expenseData.title;
-    expense.amount = expenseData.amount;
-    expense.category = expenseData.category;
+const deleteExpense = async (id) => {
+    const result = await pool.query(
+        'DELETE FROM expenses WHERE id = $1 RETURNING *',
+        [id]
+    );
 
-    return expense;
+    return result.rows[0] || null;
 };
 
 module.exports = {
     getAllExpenses,
     createExpense,
-    deleteExpense,
-    updateExpense
+    deleteExpense
 };

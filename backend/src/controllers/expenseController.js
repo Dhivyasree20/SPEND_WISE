@@ -1,50 +1,33 @@
 const {
     getAllExpenses,
     createExpense,
-    deleteExpense,
-    updateExpense
+    deleteExpense
 } = require('../services/expenseService');
 
-const getExpenses = (req, res) => {
-    res.json(getAllExpenses());
+const getExpenses = async (req, res) => {
+    const expenses = await getAllExpenses();
+    res.json(expenses);
 };
 
-const addExpense = (req, res) => {
-    const expense = createExpense(req.body);
-
+const addExpense = async (req, res) => {
+    const expense = await createExpense(req.body);
     res.status(201).json(expense);
 };
 
-const removeExpense = (req, res) => {
-    const deletedExpense = deleteExpense(req.params.id);
+const removeExpense = async (req, res) => {
+    const deletedExpense = await deleteExpense(req.params.id);
 
     if (!deletedExpense) {
         return res.status(404).json({
-            message: "Expense not found"
+            message: 'Expense not found'
         });
     }
 
     res.json(deletedExpense);
 };
 
-const editExpense = (req, res) => {
-    const updatedExpense = updateExpense(
-        req.params.id,
-        req.body
-    );
-
-    if (!updatedExpense) {
-        return res.status(404).json({
-            message: "Expense not found"
-        });
-    }
-
-    res.json(updatedExpense);
-};
-
 module.exports = {
     getExpenses,
     addExpense,
-    removeExpense,
-    editExpense
+    removeExpense
 };
