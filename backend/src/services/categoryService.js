@@ -1,47 +1,52 @@
-const categories = [
-    {
-        id: 1,
-        name: "Food"
-    },
-    {
-        id: 2,
-        name: "Travel"
-    }
-];
+const pool = require('../config/db');
 
-const getAllCategories = () => {
-    return categories;
-};
-
-const createCategory = (categoryData) => {
-    const newCategory = {
-        id: categories.length + 1,
-        ...categoryData
-    };
-
-    categories.push(newCategory);
-
-    return newCategory;
-};
-
-const deleteCategory = (id) => {
-    const index = categories.findIndex(
-        category => category.id === parseInt(id)
+const getAllCategories = async () => {
+    const result = await pool.query(
+        'SELECT * FROM categories ORDER BY id'
     );
 
-    if (index === -1) {
-        return null;
-    }
+    return result.rows;
+};
 
-    const deletedCategory = categories[index];
+const createCategory = async (categoryData) => {
+    const { name } = categoryData;
 
-    categories.splice(index, 1);
+    const result = await pool.query(
+        `INSERT INTO categories (name)
+         VALUES ($1)
+         RETURNING *`,
+        [name]
+    );
 
-    return deletedCategory;
+    return result.rows[0];
+};
+
+const updateCategory = async (id, categoryData) => {
+    const { name } = categoryData;
+
+    const result = await pool.query(
+        `UPDATE categories
+         SET name = $1
+         WHERE id = $2
+         RETURNING *`,
+        [name, id]
+    );
+
+    return result.rows[0] || null;
+};
+
+const deleteCategory = async (id) => {
+    const result = await pool.query(
+        'DELETE FROM categories WHERE id = $1 RETURNING *',
+        [id]
+    );
+
+    return result.rows[0] || null;
 };
 
 module.exports = {
     getAllCategories,
     createCategory,
+    updateCategory,
     deleteCategory
 };

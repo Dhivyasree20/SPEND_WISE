@@ -1,25 +1,43 @@
 const {
     getAllCategories,
     createCategory,
+    updateCategory,
     deleteCategory
 } = require('../services/categoryService');
 
-const getCategories = (req, res) => {
-    res.json(getAllCategories());
+const getCategories = async (req, res) => {
+    const categories = await getAllCategories();
+    res.json(categories);
 };
 
-const addCategory = (req, res) => {
-    const category = createCategory(req.body);
-
+const addCategory = async (req, res) => {
+    const category = await createCategory(req.body);
     res.status(201).json(category);
 };
 
-const removeCategory = (req, res) => {
-    const deletedCategory = deleteCategory(req.params.id);
+const editCategory = async (req, res) => {
+    const updatedCategory = await updateCategory(
+        req.params.id,
+        req.body
+    );
+
+    if (!updatedCategory) {
+        return res.status(404).json({
+            message: 'Category not found'
+        });
+    }
+
+    res.json(updatedCategory);
+};
+
+const removeCategory = async (req, res) => {
+    const deletedCategory = await deleteCategory(
+        req.params.id
+    );
 
     if (!deletedCategory) {
         return res.status(404).json({
-            message: "Category not found"
+            message: 'Category not found'
         });
     }
 
@@ -29,5 +47,6 @@ const removeCategory = (req, res) => {
 module.exports = {
     getCategories,
     addCategory,
+    editCategory,
     removeCategory
 };
