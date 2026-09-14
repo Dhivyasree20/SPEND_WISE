@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: spendwise-postgres
+    environment:
+      POSTGRES_USER: spendwise_application
+      POSTGRES_PASSWORD: dhivya@2004
+      POSTGRES_DB: spendwise_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - spendwise_postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: spendwise-backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: spendwise_application
+      DB_PASSWORD: dhivya@2004
+      DB_NAME: spendwise_db
+      JWT_SECRET: mysecretkey
+    depends_on:
+      - postgres
+
+volumes:
+  spendwise_postgres_data:

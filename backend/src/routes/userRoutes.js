@@ -1,14 +1,16 @@
+console.log('USER ROUTES LOADED');
+
 const express = require('express');
 
 const router = express.Router();
 
 const {
-    getUsers,
-    addUser
+  signup,
+  login
 } = require('../controllers/userController');
 
-router.get('/users', getUsers);
+router.post('/signup', signup);
 
-router.post('/users', addUser);
+router.post('/login', login);
 
 module.exports = router;
