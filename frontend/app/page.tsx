@@ -94,9 +94,10 @@ export default function SpendWisePage() {
   const [sort, setSort] = useState('newest')
 
   useEffect(() => {
-    setToken(window.localStorage.getItem(TOKEN_KEY))
-    setReady(true)
-  }, [])
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  setToken(window.localStorage.getItem(TOKEN_KEY))
+  setReady(true)
+}, [])
 
   const logout = useCallback(() => {
     window.localStorage.removeItem(TOKEN_KEY)
@@ -156,10 +157,11 @@ export default function SpendWisePage() {
   )
 
   useEffect(() => {
-    if (token) {
-      void loadExpenses(token)
-    }
-  }, [loadExpenses, token])
+  if (token) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadExpenses(token)
+  }
+}, [loadExpenses, token])
 
   async function authenticate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
