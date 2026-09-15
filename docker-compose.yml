@@ -3,13 +3,18 @@ services:
     image: postgres:16
     container_name: spendwise-postgres
     environment:
-      POSTGRES_USER: spendwise_application
-      POSTGRES_PASSWORD: dhivya@2004
-      POSTGRES_DB: spendwise_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - spendwise_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
@@ -19,12 +24,33 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: spendwise_application
-      DB_PASSWORD: dhivya@2004
-      DB_NAME: spendwise_db
-      JWT_SECRET: mysecretkey
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:5000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    container_name: spendwise-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+       
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   spendwise_postgres_data:

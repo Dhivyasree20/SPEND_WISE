@@ -14,6 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build backend Docker image
+        run: docker build -t spendwise-backend ./backend
+
+      - name: Build frontend Docker image
+        run: docker build -t spendwise-frontend ./frontend
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

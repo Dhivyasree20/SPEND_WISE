@@ -17,7 +17,7 @@ type Draft = {
 }
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://192.168.1.7:5000'
+  process.env.NEXT_PUBLIC_API_URL ?? 'http://192.168.1.6:5000'
 
 const TOKEN_KEY = 'spendwise_token'
 
