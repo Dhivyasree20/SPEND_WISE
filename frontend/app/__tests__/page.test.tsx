@@ -23,3 +23,9 @@ describe('SpendWise Page', () => {
     expect(screen.getByPlaceholderText('Name')).toBeTruthy()
   })
 })
+
+describe('CI failure gate verification', () => {
+  it('detects an intentional test failure', () => {
+    expect(true).toBe(false)
+  })
+})
