@@ -24,8 +24,3 @@ describe('SpendWise Page', () => {
   })
 })
 
-describe('CI failure gate verification', () => {
-  it('detects an intentional test failure', () => {
-    expect(true).toBe(false)
-  })
-})
